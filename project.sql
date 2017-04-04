@@ -61,8 +61,8 @@ CREATE TABLE Employee
 
 CREATE TABLE CUSTOMER
 (
-    custID      INTEGER
-    phoneNum    INTEGER     NOT NULL,
+    custID      INTEGER	    PRIMARY KEY,
+    phoneNum    INTEGER,
     email       CHAR(50),
     age         NUMBER(3,1) NOT NULL,
     numBooks    INTEGER     NOT NULL,
@@ -70,6 +70,7 @@ CREATE TABLE CUSTOMER
 
 -- CcustID: Customer ID is unique
     CONSTRAINT CcustID PRIMARY KEY (custID)
+    CONSTRAINT custContactInfo ((phoneNum not (is null)) or (email not (is null)))
 );
 
 CREATE TABLE SECTION
