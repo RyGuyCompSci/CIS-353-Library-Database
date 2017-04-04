@@ -1,11 +1,13 @@
+SPOOL project.out 
+SET ECHO ON
 /*
 CIS 353 Team 2 Project: Library Database
 
 Team Members:
-	Cameron Sprowls
-	Dustin Thurston
-	Josh Eldridge
-	Ryan Jones
+	<Cameron Sprowls>
+	<Dustin Thurston>
+	<Josh Eldridge>
+	<Ryan Jones>
 */
 
 
@@ -21,7 +23,6 @@ Team Members:
 
 -- DROP EXISTING TABLES
 -------------------------------------------
-SET ECHO ON 
 DROP TABLE BRANCH CASCADE CONSTRAINTS;
 DROP TABLE EMPLOYEE CASCADE CONSTRAINTS;
 DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
@@ -30,7 +31,6 @@ DROP TABLE BOOK CASCADE CONSTRAINTS;
 DROP TABLE GENRES CASCADE CONSTRAINTS;
 DROP TABLE BALANCES CASCADE CONSTRAINTS;
 DROP TABLE TRANSACTION CASCADE CONSTRAINTS;
-SET ECHO OFF
 
 
 
@@ -69,7 +69,7 @@ CREATE TABLE CUSTOMER
     memExpDate  DATE        NOT NULL,
 
 -- CcustID: Customer ID is unique
-    CONSTRAINT CcustID PRIMARY KEY (custID)
+    CONSTRAINT CcustID PRIMARY KEY (custID),
     CONSTRAINT custContactInfo ((phoneNum not (is null)) or (email not (is null)))
 );
 
@@ -119,3 +119,15 @@ CREATE TABLE TRANSACTION
     dueDate     DATE
     --ahhhhhhh help pls
 );
+
+SET FEEDBACK OFF 
+
+--INSERT STATEMENTS
+
+SET FEEDBACK ON
+COMMIT;
+
+-- Queries
+
+COMMIT;
+SPOOL OFF 
