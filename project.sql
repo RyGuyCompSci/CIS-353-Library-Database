@@ -1,4 +1,4 @@
-/*
+9/*
 CIS 353 Team 2 Project: Library Database
 
 Team Members:
@@ -70,7 +70,12 @@ CREATE TABLE CUSTOMER
 
 -- CcustID: Customer ID is unique
     CONSTRAINT CcustID PRIMARY KEY (custID)
-    CONSTRAINT custContactInfo ((phoneNum not (is null)) or (email not (is null)))
+
+--Customer must supply a phone number or an email to be valid
+    CONSTRAINT custIC1 CHECK ((phoneNum not (is null)) or (email not (is null)))
+
+--Email must have at sign and a period to be valid
+    CONSTRAINT cutsIC2 CHECK (email like '%@%' and email like '%.%')
 );
 
 CREATE TABLE SECTION
@@ -82,6 +87,7 @@ CREATE TABLE SECTION
 
 -- CsecName: section Name is unique
     CONSTRAINT secName PRIMARY KEY (secName),
+    CONSTRAINT sectionIC1 CHECK (branchID not(is null))
 );
 
 CREATE TABLE BOOK
@@ -93,7 +99,7 @@ CREATE TABLE BOOK
 
 -- CbookID: bookID is unique
     CONSTRAINT bookID PRIMARY KEY (bookID)
-
+    CONSTRAINT bookIC1 CHECK ()
 );
 
 CREATE TABLE GENRES
