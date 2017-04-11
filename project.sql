@@ -1,5 +1,4 @@
 /*
-=======
 SPOOL project.out 
 SET ECHO ON
 /*
@@ -40,11 +39,15 @@ CREATE TABLE Branch
 (
     branchID    INTEGER,
     brName      CHAR(15)    NOT NULL,
+    managerID   INTEGER     NOT NULL,
 
 --  CbranchID: BranchID is unique
     CONSTRAINT CbranchID PRIMARY KEY (branchID)
--- TODO: I think there's another constraint here 
---       based on manager, but I'm not sure
+
+-- ManagerID is a Foreign Key
+    CONSTRAINT branchIC1 FOREIGN KEY (ManagerID) 
+                REFERENCES Employee(empID)
+                
 );
 
 CREATE TABLE Employee
