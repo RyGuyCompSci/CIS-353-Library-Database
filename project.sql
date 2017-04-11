@@ -1,10 +1,8 @@
-<<<<<<< HEAD
-9/*
+/*
 =======
 SPOOL project.out 
 SET ECHO ON
 /*
->>>>>>> a422c6b1bb76b01a3f5a8b05802aa7720e783f0d
 CIS 353 Team 2 Project: Library Database
 
 Team Members:
