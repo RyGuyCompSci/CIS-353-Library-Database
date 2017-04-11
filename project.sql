@@ -15,6 +15,8 @@ Team Members:
 ------------------------------------------
 -- TODO:
 --          -Constraints   (pls remember to add commas to existing Constraints when adding new ones <3)
+--          -Fill the database with all the goodness
+--          -Query the tables so good
 ------------------------------------------
 
 
@@ -47,7 +49,6 @@ CREATE TABLE Branch
 -- ManagerID is a Foreign Key
     CONSTRAINT branchIC1 FOREIGN KEY (ManagerID) 
                 REFERENCES Employee(empID)
-                
 );
 
 CREATE TABLE Employee
@@ -60,15 +61,16 @@ CREATE TABLE Employee
 
 -- CempID: employee id is unique
     CONSTRAINT CempID PRIMARY KEY (empID)
+                
 );
 
 CREATE TABLE CUSTOMER
 (
     custID      INTEGER	    PRIMARY KEY,
     phoneNum    INTEGER,
+    name        CHAR(15)    NOT NULL,
     email       CHAR(50),
     age         NUMBER(3,1) NOT NULL,
-    numBooks    INTEGER     NOT NULL,
     memExpDate  DATE        NOT NULL,
 
 -- CcustID: Customer ID is unique
@@ -125,13 +127,33 @@ CREATE TABLE TRANSACTION
 (
     custID      INTEGER,
     checkOutDate DATE,
-    dueDate     DATE
+    dueDate     DATE,
+    bookID      INTEGER
     --ahhhhhhh help pls
 );
 
 SET FEEDBACK OFF 
 
 --INSERT STATEMENTS
+
+--Branch-----------------------------------------------------------
+INSERT INTO BRANCH VALUES (10, 'Grand Rapids Public Library', 100);
+INSERT INTO BRANCH VALUES (20, 'Allendale Public Library', 140);
+
+
+
+--Employee----------------------------------------------------------
+INSERT INTO EMPLOYEE VALUES (100, TO_DATE('10/2/12', 'MM/DD/YY'), NULL, 'Ian Watt', 10);
+INSERT INTO EMPLOYEE VALUES (110, TO_DATE('04/12/12', 'MM/DD/YY'), TO_DATE('4/13/12', 'MM/DD/YY', 'Ian Hall', 10);
+INSERT INTO EMPLOYEE VALUES (120, TO_DATE('05/23/96', 'MM/DD/YY'), NULL, 'John Smith', 10);
+INSERT INTO EMPLOYEE VALUES (130, TO_DATE('11/21/13', 'MM/DD/YY'), NULL, 'Rick Astley', 20);
+INSERT INTO EMPLOYEE VALUES (140, TO_DATE('07/9/12', 'MM/DD/YY'), NULL, 'Bernie Kropp', 20);
+INSERT INTO EMPLOYEE VALUES (150, TO_DATE('9/21/11', 'MM/DD/YY'), TO_DATE('10/23/11'), 'Bonnie Mitko', 20);
+
+--Customer----------------------------------------------------------
+INSERT INTO CUSTOMER VALUES (1234, 9062825555, 'Bob Mad' 'bobm@gmail.com', 47, TO_DATE('10/20/17', 'MM/DD/YY'));
+INSERT INTO CUSTOMER VALUES (1235, 6162829999, 'Henry Ford', 'inventor100@yahoo.com', 47, TO_DATE('10/20/17', 'MM/DD/YY'));
+
 
 SET FEEDBACK ON
 COMMIT;
