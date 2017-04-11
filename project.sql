@@ -1,18 +1,22 @@
+<<<<<<< HEAD
 9/*
+=======
+SPOOL project.out 
+SET ECHO ON
+/*
+>>>>>>> a422c6b1bb76b01a3f5a8b05802aa7720e783f0d
 CIS 353 Team 2 Project: Library Database
 
 Team Members:
-	Cameron Sprowls
-	Dustin Thurston
-	Josh Eldridge
-	Ryan Jones
+	<Cameron Sprowls>
+	<Dustin Thurston>
+	<Josh Eldridge>
+	<Ryan Jones>
 */
 
 
 ------------------------------------------
 -- TODO:
---          -Phone not null
---          -Email not null
 --          -Constraints   (pls remember to add commas to existing Constraints when adding new ones <3)
 ------------------------------------------
 
@@ -21,7 +25,6 @@ Team Members:
 
 -- DROP EXISTING TABLES
 -------------------------------------------
-SET ECHO ON 
 DROP TABLE BRANCH CASCADE CONSTRAINTS;
 DROP TABLE EMPLOYEE CASCADE CONSTRAINTS;
 DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
@@ -30,7 +33,6 @@ DROP TABLE BOOK CASCADE CONSTRAINTS;
 DROP TABLE GENRES CASCADE CONSTRAINTS;
 DROP TABLE BALANCES CASCADE CONSTRAINTS;
 DROP TABLE TRANSACTION CASCADE CONSTRAINTS;
-SET ECHO OFF
 
 
 
@@ -69,10 +71,10 @@ CREATE TABLE CUSTOMER
     memExpDate  DATE        NOT NULL,
 
 -- CcustID: Customer ID is unique
-    CONSTRAINT CcustID PRIMARY KEY (custID)
+    CONSTRAINT CcustID PRIMARY KEY (custID),
 
 --Customer must supply a phone number or an email to be valid
-    CONSTRAINT custIC1 CHECK ((phoneNum not (is null)) or (email not (is null)))
+    CONSTRAINT custIC1 CHECK ((phoneNum not (is null)) or (email not (is null))),
 
 --Email must have at sign and a period to be valid
     CONSTRAINT cutsIC2 CHECK (email like '%@%' and email like '%.%')
@@ -125,3 +127,15 @@ CREATE TABLE TRANSACTION
     dueDate     DATE
     --ahhhhhhh help pls
 );
+
+SET FEEDBACK OFF 
+
+--INSERT STATEMENTS
+
+SET FEEDBACK ON
+COMMIT;
+
+-- Queries
+
+COMMIT;
+SPOOL OFF 
