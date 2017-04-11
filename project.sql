@@ -1,4 +1,4 @@
-/*
+
 SPOOL project.out 
 SET ECHO ON
 /*
@@ -11,7 +11,6 @@ Team Members:
 	<Ryan Jones>
 */
 
-
 ------------------------------------------
 -- TODO:
 --          -Constraints   (pls remember to add commas to existing Constraints when adding new ones <3)
@@ -19,146 +18,168 @@ Team Members:
 --          -Query the tables so good
 ------------------------------------------
 
-
-
-
 -- DROP EXISTING TABLES
 -------------------------------------------
-DROP TABLE BRANCH CASCADE CONSTRAINTS;
-DROP TABLE EMPLOYEE CASCADE CONSTRAINTS;
-DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
-DROP TABLE SECTION CASCADE CONSTRAINTS;
-DROP TABLE BOOK CASCADE CONSTRAINTS;
-DROP TABLE GENRES CASCADE CONSTRAINTS;
-DROP TABLE BALANCES CASCADE CONSTRAINTS;
-DROP TABLE TRANSACTION CASCADE CONSTRAINTS;
+DROP TABLE Branch CASCADE CONSTRAINTS;
+DROP TABLE Employee CASCADE CONSTRAINTS;
+DROP TABLE Customer CASCADE CONSTRAINTS;
+DROP TABLE Section CASCADE CONSTRAINTS;
+DROP TABLE Book CASCADE CONSTRAINTS;
+DROP TABLE Genres CASCADE CONSTRAINTS;
+DROP TABLE Balances CASCADE CONSTRAINTS;
+DROP TABLE Transactionz CASCADE CONSTRAINTS;
 
 
+CREATE TABLE Employee
+(
+    empID       INTEGER,--		PRIMARY KEY,
+    startDate   DATE        NOT NULL,
+    endDate     DATE NULL,
+    name        CHAR(15)    NOT NULL,
+    branchID    INTEGER     NOT NULL, 
+-- keep track of branch they work at
+-- CempID: employee id is unique
+    CONSTRAINT CempID PRIMARY KEY (empID)        
+);
 
 -- CREATING THE TABLES
 -------------------------------------------
 CREATE TABLE Branch
 (
-    branchID    INTEGER,
-    brName      CHAR(15)    NOT NULL,
-    managerID   INTEGER     NOT NULL,
-
+	branchID    INTEGER,
+	brName      CHAR(200)    NOT NULL,
+	managerID   INTEGER     NOT NULL,
 --  CbranchID: BranchID is unique
-    CONSTRAINT CbranchID PRIMARY KEY (branchID)
-
+	CONSTRAINT branchIC1 PRIMARY KEY (branchID),
 -- ManagerID is a Foreign Key
-    CONSTRAINT branchIC1 FOREIGN KEY (ManagerID) 
-                REFERENCES Employee(empID)
+    CONSTRAINT branchIC2 FOREIGN KEY (ManagerID) REFERENCES Employee(empID)
 );
 
-CREATE TABLE Employee
+CREATE TABLE Customer
 (
-    empID       INTEGER,
-    name        CHAR(15)    NOT NULL,
-    startDate   DATE        NOT NULL,
-    endDate     DATE,
-    branchID    INTEGER     NOT NULL, -- keep track of branch they worked at
-
--- CempID: employee id is unique
-    CONSTRAINT CempID PRIMARY KEY (empID)
-                
-);
-
-CREATE TABLE CUSTOMER
-(
-    custID      INTEGER	    PRIMARY KEY,
-    phoneNum    INTEGER,
-    name        CHAR(15)    NOT NULL,
-    email       CHAR(50),
+    custID      INTEGER,
+    name        CHAR(50)    NOT NULL,
     age         NUMBER(3,1) NOT NULL,
-    memExpDate  DATE        NOT NULL,
-
+    phoneNum    INTEGER,
+    email       CHAR(50),
+--
 -- CcustID: Customer ID is unique
     CONSTRAINT CcustID PRIMARY KEY (custID),
-
+--
 --Customer must supply a phone number or an email to be valid
-    CONSTRAINT custIC1 CHECK ((phoneNum not (is null)) or (email not (is null))),
-
+    CONSTRAINT custIC1 CHECK ((phoneNum is not null) or (email is not null)),
+--
 --Email must have at sign and a period to be valid
     CONSTRAINT cutsIC2 CHECK (email like '%@%' and email like '%.%')
 );
 
-CREATE TABLE SECTION
+CREATE TABLE Section
 (
     secName     CHAR(15),
     branchID    INTEGER,
     maxBooks    INTEGER     NOT NULL,
     currNumBooks INTEGER    NOT NULL,
-
 -- CsecName: section Name is unique
     CONSTRAINT secName PRIMARY KEY (secName),
-    CONSTRAINT sectionIC1 CHECK (branchID not(is null))
+--
+--Branch id is a key, cannot be null
+    CONSTRAINT sectionIC1 CHECK (branchID is not null)
 );
 
-CREATE TABLE BOOK
+CREATE TABLE Book
 (
     bookID      INTEGER,
     author      CHAR(20)    NOT NULL,
     title       CHAR(30)    NOT NULL,
     secName     CHAR(15)    NOT NULL,
-
+--
 -- CbookID: bookID is unique
-    CONSTRAINT bookID PRIMARY KEY (bookID)
-    CONSTRAINT bookIC1 CHECK ()
+    CONSTRAINT bookID PRIMARY KEY (bookID),
+--
+--Book must belong to a valid section
+    CONSTRAINT bookIC1 FOREIGN KEY (secName) REFERENCES SECTION(secName)
 );
 
-CREATE TABLE GENRES
+CREATE TABLE Genres
 (
     bookID      INTEGER,
     genre       CHAR(20),
-    --idk what to do here...
+	CONSTRAINT genresIC1 FOREIGN KEY (bookID) REFERENCES Book(bookID)
 );
 
-CREATE TABLE BALANCES
+CREATE TABLE Balances
 (
     branchID    INTEGER,
     custID      INTEGER,
-    balance     NUMBER(*,2) NOT NULL
-    --idk how to deal with two keys, halp
-
+    balance     NUMBER(*,2) NOT NULL,
+	CONSTRAINT balancesIC1 PRIMARY KEY (branchID, custID)
 );
 
-CREATE TABLE TRANSACTION
+CREATE TABLE Transactionz
 (
     custID      INTEGER,
     checkOutDate DATE,
     dueDate     DATE,
-    bookID      INTEGER
-    --ahhhhhhh help pls
+    bookID      INTEGER,
+	CONSTRAINT transactionsIC1 PRIMARY KEY (custID, checkOutDate)
 );
 
 SET FEEDBACK OFF 
 
 --INSERT STATEMENTS
 
+--Employee----------------------------------------------------------
+INSERT INTO EMPLOYEE VALUES (100, TO_DATE('10/2/12', 'MM/DD/YY'), NULL, 'Ian Watt', 10);
+INSERT INTO EMPLOYEE VALUES (110, TO_DATE('04/12/12', 'MM/DD/YY'), TO_DATE('4/13/12', 'MM/DD/YY'), 'Ian Hall', 10);
+INSERT INTO EMPLOYEE VALUES (120, TO_DATE('05/23/96', 'MM/DD/YY'), NULL, 'John Smith', 10);
+INSERT INTO EMPLOYEE VALUES (130, TO_DATE('11/21/13', 'MM/DD/YY'), NULL, 'Rick Astley', 20);
+INSERT INTO EMPLOYEE VALUES (140, TO_DATE('07/9/12', 'MM/DD/YY'), NULL, 'Bernie Kropp', 20);
+INSERT INTO EMPLOYEE VALUES (150, TO_DATE('9/21/11', 'MM/DD/YY'), TO_DATE('10/23/11', 'MM/DD/YY'), 'Bonnie Mitko', 20);
+
 --Branch-----------------------------------------------------------
 INSERT INTO BRANCH VALUES (10, 'Grand Rapids Public Library', 100);
 INSERT INTO BRANCH VALUES (20, 'Allendale Public Library', 140);
 
 
+--Sections--
+insert into Section values ('Fiction', 10, 100, 50);
+insert into Section values ('Nonfiction', 10, 100, 50);
 
---Employee----------------------------------------------------------
-INSERT INTO EMPLOYEE VALUES (100, TO_DATE('10/2/12', 'MM/DD/YY'), NULL, 'Ian Watt', 10);
-INSERT INTO EMPLOYEE VALUES (110, TO_DATE('04/12/12', 'MM/DD/YY'), TO_DATE('4/13/12', 'MM/DD/YY', 'Ian Hall', 10);
-INSERT INTO EMPLOYEE VALUES (120, TO_DATE('05/23/96', 'MM/DD/YY'), NULL, 'John Smith', 10);
-INSERT INTO EMPLOYEE VALUES (130, TO_DATE('11/21/13', 'MM/DD/YY'), NULL, 'Rick Astley', 20);
-INSERT INTO EMPLOYEE VALUES (140, TO_DATE('07/9/12', 'MM/DD/YY'), NULL, 'Bernie Kropp', 20);
-INSERT INTO EMPLOYEE VALUES (150, TO_DATE('9/21/11', 'MM/DD/YY'), TO_DATE('10/23/11'), 'Bonnie Mitko', 20);
 
 --Customer----------------------------------------------------------
-INSERT INTO CUSTOMER VALUES (1234, 9062825555, 'Bob Mad' 'bobm@gmail.com', 47, TO_DATE('10/20/17', 'MM/DD/YY'));
-INSERT INTO CUSTOMER VALUES (1235, 6162829999, 'Henry Ford', 'inventor100@yahoo.com', 47, TO_DATE('10/20/17', 'MM/DD/YY'));
+INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, 'bobm@gmail.com');
+INSERT INTO Customer VALUES (1235, 'Henry Ford', 47, 6162829999, 'inventor100@yahoo.com');
+INSERT INTO Customer VALUES (1236, 'Thomas Hamilton', 25, 1231231234, null);
+
+--Books-------------------------------------------------------------
+insert into Book values (0123456, 'Al Fred', 'Give it All', 'Nonfiction');
+insert into Book values (0123457, 'Bat Erry', 'Team is Total', 'Nonfiction');
+insert into Book values (0123458, 'Car Fone', '2 is Too Much', 'Nonfiction');
+insert into Book values (0123459, 'Doll Perry', 'An Houly Diary of a Poor Man', 'Nonfiction');
+insert into Book values (0123455, 'Josh Eldridge', 'A Study in Overused Phrases', 'Nonfiction');
 
 
 SET FEEDBACK ON
 COMMIT;
 
--- Queries
+--QUERIES-----------------------------------------------------------
+/*
+Select *
+from Employee;
+
+Select *
+from Branch;
+
+Select *
+from Customer;
+
+Select *
+from Section;
+*/
+Select title
+from Book
+where like ('% ')
+order by author;
 
 COMMIT;
 SPOOL OFF 
