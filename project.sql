@@ -69,8 +69,8 @@ CREATE TABLE Customer
 --Customer must supply a phone number or an email to be valid
     CONSTRAINT custIC1 CHECK ((phoneNum is not null) or (email is not null)),
 --
---Email must have at sign and a period to be valid
-    CONSTRAINT cutsIC2 CHECK (email like '%@%' and email like '%.%')
+--Email must have @ sign and a period to be valid
+    CONSTRAINT custIC2 CHECK (email like '%@%' and email like '%.%')
 );
 
 CREATE TABLE Section
@@ -90,7 +90,7 @@ CREATE TABLE Book
 (
     bookID      INTEGER,
     author      CHAR(20)    NOT NULL,
-    title       CHAR(30)    NOT NULL,
+    title       CHAR(35)    NOT NULL,
     secName     CHAR(15)    NOT NULL,
 --
 -- CbookID: bookID is unique
@@ -147,23 +147,23 @@ insert into Section values ('Nonfiction', 10, 100, 50);
 
 
 --Customer----------------------------------------------------------
-INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, 'bobm@gmail.com');
+INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, null);
 INSERT INTO Customer VALUES (1235, 'Henry Ford', 47, 6162829999, 'inventor100@yahoo.com');
 INSERT INTO Customer VALUES (1236, 'Thomas Hamilton', 25, 1231231234, null);
 
 --Books-------------------------------------------------------------
-insert into Book values (0123456, 'Al Fred', 'Give it All', 'Nonfiction');
-insert into Book values (0123457, 'Bat Erry', 'Team is Total', 'Nonfiction');
-insert into Book values (0123458, 'Car Fone', '2 is Too Much', 'Nonfiction');
-insert into Book values (0123459, 'Doll Perry', 'An Houly Diary of a Poor Man', 'Nonfiction');
-insert into Book values (0123455, 'Josh Eldridge', 'A Study in Overused Phrases', 'Nonfiction');
+insert into Book values (0123456, 'Al Fred', 'Give    it All', 'Nonfiction');
+insert into Book values (0123457, 'Bat Erry', 'Team    is Total', 'Nonfiction');
+insert into Book values (0123458, 'Car Fone', '2       is Too Much', 'Nonfiction');
+insert into Book values (0123459, 'Doll Perry', 'An      Houly Diary of a Poor Man', 'Nonfiction');
+insert into Book values (0123455, 'Josh Eldridge', 'A       Study in Overused Phrases', 'Nonfiction');
 
 
 SET FEEDBACK ON
 COMMIT;
 
 --QUERIES-----------------------------------------------------------
-/*
+
 Select *
 from Employee;
 
@@ -175,10 +175,9 @@ from Customer;
 
 Select *
 from Section;
-*/
+
 Select title
 from Book
-where like ('% ')
 order by author;
 
 COMMIT;
