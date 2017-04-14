@@ -115,13 +115,13 @@ CREATE TABLE Balances
 	CONSTRAINT balancesIC1 PRIMARY KEY (branchID, custID)
 );
 
-CREATE TABLE Transactionz
+CREATE TABLE CheckOut
 (
     custID      INTEGER,
     checkOutDate DATE,
     dueDate     DATE,
     bookID      INTEGER,
-	CONSTRAINT transactionsIC1 PRIMARY KEY (custID, checkOutDate)
+	CONSTRAINT CheckOutIC1 PRIMARY KEY (custID, checkOutDate)
 );
 
 SET FEEDBACK OFF 
@@ -142,40 +142,75 @@ INSERT INTO BRANCH VALUES (20, 'Allendale Public Library', 140);
 
 
 --Sections--
-insert into Section values ('Fiction', 10, 100, 50);
-insert into Section values ('Nonfiction', 10, 100, 50);
-
+INSERT INTO Section values ('Fiction', 10, 100, 50);
+INSERT INTO Section values ('Nonfiction', 10, 100, 50);
+INSERT INTO Section values ('Childrens', 10, 100, 50);
 
 --Customer----------------------------------------------------------
 INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, null);
-INSERT INTO Customer VALUES (1235, 'Henry Ford', 47, 6162829999, 'inventor100@yahoo.com');
+INSERT INTO Customer VALUES (1235, 'Henry Ford', 80, 6162829999, 'inventor100@yahoo.com');
 INSERT INTO Customer VALUES (1236, 'Thomas Hamilton', 25, 1231231234, null);
 
 --Books-------------------------------------------------------------
-insert into Book values (0123456, 'Al Fred', 'Give    it All', 'Nonfiction');
-insert into Book values (0123457, 'Bat Erry', 'Team    is Total', 'Nonfiction');
-insert into Book values (0123458, 'Car Fone', '2       is Too Much', 'Nonfiction');
-insert into Book values (0123459, 'Doll Perry', 'An      Houly Diary of a Poor Man', 'Nonfiction');
-insert into Book values (0123455, 'Josh Eldridge', 'A       Study in Overused Phrases', 'Nonfiction');
+INSERT INTO Book values (0123457, 'Bat Erry', 'Team    is Total', 'Nonfiction');
+INSERT INTO Book values (0123459, 'Doll Perry', 'An      Houly Diary of a Poor Man', 'Nonfiction');
+INSERT INTO Book values (0123458, 'Car Fone', '2       is Too Much', 'Nonfiction');
+INSERT INTO Book values (0123455, 'Josh Eldridge', 'A       Study in Overused Phrases', 'Nonfiction');
+INSERT INTO Book values (0123456, 'Al Fred', 'Give    it All', 'Nonfiction');
 
+--Genres------------------------------------------------------------
+
+--Balances----------------------------------------------------------
+
+--Transactionz------------------------------------------------------
 
 SET FEEDBACK ON
 COMMIT;
 
 --QUERIES-----------------------------------------------------------
 
+--Join invlolving at least four relations
 Select *
 from Employee;
 
+--Self-join
 Select *
 from Branch;
 
+--Union, Intersect, and/or minus
 Select *
 from Customer;
 
+--Sum, avg, max, and/or min
 Select *
 from Section;
 
+--GROUP BY, HAVING, and ORDER BY, all appearing in the same query
+
+--A correlated subquery
+
+--A non-correlated subquery
+
+--A relational DIVISION query
+
+--An outer join query
+
+/*A RANK query
+Rank Employees by date started only if they actively work there
+*/
+
+/* A Top-N query
+Find the oldest customer of the library
+*/
+SELECT *
+FROM (SELECT C.name, C.age
+      FROM Customer C 
+      ORDER BY age)
+WHERE rownum = 1
+
+/* BONUS Order By Query
+find the title of books ordered by author
+*/
 Select title
 from Book
 order by author;
