@@ -61,7 +61,9 @@ CREATE TABLE Customer
     phoneNum    INTEGER,
     email       CHAR(50) CHECK (email like '%@%' and email like '%.%'),
 --Customer must supply a phone number or an email to be valid
-    CONSTRAINT custIC1 CHECK ((phoneNum is not null) or (email is not null))
+    CONSTRAINT custIC1 CHECK ((phoneNum is not null) or (email is not null)),
+	CONSTRAINT custIC2 UNIQUE (phoneNum),
+	CONSTRAINT custIC3 UNIQUE (email)
 );
 
 CREATE TABLE Section
@@ -70,13 +72,7 @@ CREATE TABLE Section
     branchID    INTEGER,
     maxBooks    INTEGER     NOT NULL,
     currNumBooks INTEGER    NOT NULL,
--- CsecName: section Name is unique
--- WHY IS SECNAME THE ONLY PRIMARY KEY
-    CONSTRAINT secName PRIMARY KEY (secName),
---
---Branch id is a key, cannot be null
--- IF BRANCH ID IS A KEY WHY ARE YOU DOING JUST A NOT NULL CHECK *Facepalm*
-    CONSTRAINT sectionIC1 CHECK (branchID is not null)
+    PRIMARY KEY (secName, branchID)
 );
 
 CREATE TABLE Book
@@ -85,8 +81,9 @@ CREATE TABLE Book
     author      CHAR(20)    NOT NULL,
     title       CHAR(35)    NOT NULL,
     secName     CHAR(15)    NOT NULL,
+	branchID 	INTEGER		NOT NULL,
 --Book must belong to a valid section
-    CONSTRAINT bookIC1 FOREIGN KEY (secName) REFERENCES Section(secName)
+    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID)
 );
 
 CREATE TABLE Genres
@@ -94,7 +91,7 @@ CREATE TABLE Genres
     bookID      INTEGER,
     genre       CHAR(20),
 	CONSTRAINT genresIC1 PRIMARY KEY(bookID, genre),
-	CONSTRAINT genresIC2 FOREIGN KEY (bookID) REFERENCES Book(bookID),
+	CONSTRAINT genresIC2 FOREIGN KEY (bookID) REFERENCES Book(bookID)
 	--CONSTRAINT genresIC3 CHECK (genre = 'Fiction' or genre = 'Non-fiction' or genre = 'Children')
 );
 
@@ -138,28 +135,31 @@ SET CONSTRAINT employeeIC1 IMMEDIATE;
 INSERT INTO Section values ('Fiction', 10, 100, 50);
 INSERT INTO Section values ('Nonfiction', 10, 100, 50);
 INSERT INTO Section values ('Childrens', 10, 100, 50);
+INSERT INTO Section values ('Fiction', 20, 500, 200);
+INSERT INTO Section values ('Nonfiction', 20, 500, 200);
+INSERT INTO Section values ('Childrens', 20, 500, 200);
 
 --Books-------------------------------------------------------------
 -- If you're going to add unnecessary amount of spaces to make the joke, it's not worth it. Stop
-INSERT INTO Book values (0123457, 'Bat Erry', 'Team is Total', 'Nonfiction');
-INSERT INTO Book values (0123459, 'Doll Perry', 'An Hourly Diary of a Poor Man', 'Nonfiction');
-INSERT INTO Book values (0123458, 'Car Fone', '2 is Too Much', 'Nonfiction');
-INSERT INTO Book values (0123455, 'Josh Eldridge', 'A Study in Overused Phrases', 'Nonfiction');
-INSERT INTO Book values (0123456, 'Al Fred', 'Give it All', 'Nonfiction');
+INSERT INTO Book values (0123457, 'Bat Erry', 'Team is Total', 'Nonfiction', 10);
+INSERT INTO Book values (0123459, 'Doll Perry', 'An Hourly Diary of a Poor Man', 'Nonfiction', 10);
+INSERT INTO Book values (0123458, 'Car Fone', '2 is Too Much', 'Nonfiction', 20);
+INSERT INTO Book values (0123455, 'Josh Eldridge', 'A Study in Overused Phrases', 'Nonfiction', 20);
+INSERT INTO Book values (0123456, 'Al Fred', 'Give it All', 'Nonfiction', 20);
 
 --Customer----------------------------------------------------------
 INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, null);
 INSERT INTO Customer VALUES (1235, 'Henry Ford', 80, 6162829999, 'inventor100@yahoo.com');
 INSERT INTO Customer VALUES (1236, 'Thomas Hamilton', 25, 1231231234, null);
-INSERT INTO Customer VALUES (1237, 'Dank Memes', 47, 5555554444, 'magnumdong@gmail.com');
+INSERT INTO Customer VALUES (1237, 'Dank Memes', 47, 5555554444, 'magnumdong1337@gmail.com');
 
 --Balances----------------------------------------------------------
-INSERT INTO Balances values (10, 1234, 0.00);
+INSERT INTO Balances values (10, 1234, 15.00);
 INSERT INTO Balances values (10, 1235, 0.00);
-INSERT INTO Balances values (10, 1236, 0.00);
-INSERT INTO Balances values (20, 1234, 0.00);
+INSERT INTO Balances values (10, 1236, 2.00);
+INSERT INTO Balances values (20, 1234, 5.00);
 INSERT INTO Balances values (20, 1235, 0.00);
-INSERT INTO Balances values (20, 1236, 0.00);
+INSERT INTO Balances values (20, 1236, 7.00);
 --Genres------------------------------------------------------------
 -- What's the point of genres if section hold fiction/nonfiction/children?
 
@@ -194,35 +194,96 @@ WHERE C1.age > 13 AND
 
 --Union, Intersect, and/or minus
 
+--Q3-- Union (select customers that have age above 50 or have a book checked out)
+SELECT C.custID, C.age
+FROM Customer C
+WHERE age > 50
+UNION
+SELECT C.custID, C.age
+FROM Customer C, CheckOut CO
+WHERE C.custID = CO.custID; 
+
+--Q4-- Minus (select customers above the age of 40 that have not checked out any books)
+SELECT C.custID, C.age
+FROM Customer C
+WHERE age > 40
+MINUS
+SELECT C.custID, C.age
+FROM Customer C, CheckOut CO
+WHERE C.custID = CO.custID; 
+
 --Sum, avg, max, and/or min
 
+--Q5-- Sum (sum of the balances for each branch)
+SELECT Br.branchID, Br.brName, SUM (B.balance) as SumBalance
+FROM Branch Br, Balances B
+WHERE B.branchID = Br.branchID 
+GROUP BY Br.branchID, Br.brName; 
+
+--Q6-- Avg (average of all ages of customers)
+SELECT AVG(age)
+FROM Customer;
+
+--Q7-- Max (max age of customers)
+SELECT MAX(age)
+FROM Customer;
 
 --GROUP BY, HAVING, and ORDER BY, all appearing in the same query
 
+--Q8-- (Find the number of people that have checked out each book and sort by book ID)
+SELECT CO.bookID, count (*)
+FROM Customer C, CheckOut CO
+WHERE C.custID = CO.custID 
+GROUP BY CO.bookID
+HAVING COUNT(*) >= 1
+ORDER BY CO.bookID;
+
 --A correlated subquery
+
+--Q9-- (Find customers with an age above 7 that have not checked out a book)
+SELECT C.custID, C.name
+FROM Customer C
+WHERE C.age > 7 AND
+ NOT EXISTS (SELECT *
+ FROM CheckOut CO 
+ WHERE CO.custID = C.custID); 
 
 --A non-correlated subquery
 
+--Q10-- (Does the same as above just non-correlated)
+SELECT C.custID, C.name
+FROM Customer C
+WHERE C.age > 7 AND
+ C.custID not in (SELECT CO.custID
+ FROM CheckOut CO);
+
 --A relational DIVISION query
+-- TODO
 
 --An outer join query
 
-/*A RANK query
-Rank Employees by date started only if they actively work there
-*/
+--Q12--
+SELECT C.name, CO.bookID
+FROM Customer C LEFT OUTER JOIN CheckOut CO ON C.custID = CO.custID; 
 
-/* A Top-N query
-Find the oldest customer of the library
-*/
+--A RANK query
+
+--Q13--Rank Employees by date started only if they actively work there
+SELECT DENSE_RANK (50) WITHIN GROUP 
+(ORDER BY age) "Rank of age 50"
+FROM Customer;
+
+-- A Top-N query
+
+--Q14--Find the oldest customer of the library
 SELECT *
 FROM (SELECT C.name, C.age
       FROM Customer C 
-      ORDER BY age)
-WHERE rownum = 1
+      ORDER BY age DESC)
+WHERE rownum = 1;
 
-/* BONUS Order By Query
-find the title of books ordered by author
-*/
+--BONUS Order By Query
+--find the title of books ordered by author
 Select title
 from Book
 order by author;
