@@ -301,10 +301,6 @@ Select title
 from Book
 order by authorFname;
 
-COMMIT;
-SPOOL OFF 
-
-
 
 --TESTING custID KEY UNIQUE
 INSERT INTO Customer VALUES (1234, 'Sponge Bob', 32, 8005551111, null);
@@ -317,3 +313,6 @@ INSERT INTO Customer VALUES (1432, 'Sponge Bob', 32, 8005551111, 'sponge@bobcom'
 
 --TESTING bookIC2
 INSERT INTO Book VALUES (9999999, 'Dustin', 'Thurston', 'I am stressed out about life', 'A-E', 10);
+
+COMMIT;
+SPOOL OFF 
