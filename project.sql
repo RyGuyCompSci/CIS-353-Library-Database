@@ -1,4 +1,3 @@
-
 SPOOL project.out 
 SET ECHO ON
 /*
@@ -10,13 +9,6 @@ Team Members:
 	<Josh Eldridge>
 	<Ryan Jones>
 */
-
-------------------------------------------
--- TODO:
---          -Constraints   (pls remember to add commas to existing Constraints when adding new ones <3)
---          -Fill the database with all the goodness
---          -Query the tables so good
-------------------------------------------
 
 -- DROP EXISTING TABLES
 -------------------------------------------
@@ -228,8 +220,7 @@ SELECT C.custID, C.age
 FROM Customer C, CheckOut CO
 WHERE C.custID = CO.custID; 
 
---Sum, avg, max, and/or min
-
+--Sum, avg, max, and/or min-------------------------------------------
 --Q5-- Sum (sum of the balances for each branch)
 SELECT Br.branchID, Br.brName, SUM (B.balance) as SumBalance
 FROM Branch Br, Balances B
@@ -244,8 +235,7 @@ FROM Customer;
 SELECT MAX(age)
 FROM Customer;
 
---GROUP BY, HAVING, and ORDER BY, all appearing in the same query
-
+--GROUP BY, HAVING, and ORDER BY, all appearing in the same query-----------------
 --Q8-- (Find the number of people that have checked out each book and sort by book ID)
 SELECT CO.bookID, count (*)
 FROM Customer C, CheckOut CO
@@ -254,8 +244,7 @@ GROUP BY CO.bookID
 HAVING COUNT(*) >= 1
 ORDER BY CO.bookID;
 
---A correlated subquery
-
+--A correlated subquery-------------------------------------------
 --Q9-- (Find customers with an age above 7 that have not checked out a book)
 SELECT C.custID, C.name
 FROM Customer C
@@ -264,8 +253,7 @@ WHERE C.age > 7 AND
  FROM CheckOut CO 
  WHERE CO.custID = C.custID); 
 
---A non-correlated subquery
-
+--A non-correlated subquery---------------------------------------
 --Q10-- (Does the same as above just non-correlated)
 SELECT C.custID, C.name
 FROM Customer C
@@ -273,24 +261,32 @@ WHERE C.age > 7 AND
  C.custID not in (SELECT CO.custID
  FROM CheckOut CO);
 
---A relational DIVISION query
--- TODO
+--A relational DIVISION query-------------------------------------
+--Q11 Find Customer's ID and name who have a balance at Grand Rapids'
+SELECT C.custID, C.name
+FROM Customer C
+WHERE NOT EXISTS((SELECT B.branchID
+                  FROM Branch B
+                  WHERE B.branchID = 10)
+                  MINUS
+                  (Select A.branchID
+                  FROM Balances A
+                  WHERE A.custID = A.custID))
+ORDER BY C.custID;
 
---An outer join query
 
---Q12--
+--An outer join query---------------------------------------------
+--Q12--Joins Customers with checkout and customers without a checkout
 SELECT C.name, CO.bookID
 FROM Customer C LEFT OUTER JOIN CheckOut CO ON C.custID = CO.custID; 
 
---A RANK query
-
+--A RANK query----------------------------------------------------
 --Q13--Rank Employees by date started only if they actively work there
 SELECT DENSE_RANK (50) WITHIN GROUP 
 (ORDER BY age) "Rank of age 50"
 FROM Customer;
 
--- A Top-N query
-
+-- A Top-N query--------------------------------------------------
 --Q14--Find the oldest customer of the library
 SELECT *
 FROM (SELECT C.name, C.age
@@ -298,7 +294,7 @@ FROM (SELECT C.name, C.age
       ORDER BY age DESC)
 WHERE rownum = 1;
 
---BONUS Order By Query
+--BONUS Order By Query--------------------------------------------
 --find the title of books ordered by author
 Select title
 from Book
