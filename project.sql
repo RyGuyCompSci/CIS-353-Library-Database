@@ -117,7 +117,8 @@ CREATE TABLE CheckOut
     checkOutDate DATE,
     dueDate     DATE,
     bookID      INTEGER,
-	CONSTRAINT checkOutIC1 PRIMARY KEY (custID, checkOutDate),
+	transactionNumber INTEGER,
+	CONSTRAINT checkOutIC1 PRIMARY KEY (custID, checkOutDate, transactionNumber),
 	CONSTRAINT checkOutIC2 FOREIGN KEY (bookID) REFERENCES Book(bookID)
 );
 
@@ -181,9 +182,9 @@ INSERT INTO Genres values (0123459, 'Large Print');
 
 
 --CheckOut------------------------------------------------------
-INSERT INTO CheckOut values (1234, TO_DATE('10/2/17', 'MM/DD/YY'), TO_DATE('10/9/17', 'MM/DD/YY'), 0123455);
-INSERT INTO CheckOut values (1234, TO_DATE('10/4/17', 'MM/DD/YY'), TO_DATE('10/11/17', 'MM/DD/YY'), 0123458);
-INSERT INTO CheckOut values (1235, TO_DATE('10/4/17', 'MM/DD/YY'), TO_DATE('10/11/17', 'MM/DD/YY'), 0123455);
+INSERT INTO CheckOut values (1234, TO_DATE('10/2/17', 'MM/DD/YY'), TO_DATE('10/9/17', 'MM/DD/YY'), 0123455, 1);
+INSERT INTO CheckOut values (1234, TO_DATE('10/4/17', 'MM/DD/YY'), TO_DATE('10/11/17', 'MM/DD/YY'), 0123458, 2);
+INSERT INTO CheckOut values (1235, TO_DATE('10/4/17', 'MM/DD/YY'), TO_DATE('10/11/17', 'MM/DD/YY'), 0123455, 1);
 SET FEEDBACK ON
 COMMIT;
 
