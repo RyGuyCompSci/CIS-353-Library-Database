@@ -84,7 +84,7 @@ CREATE TABLE Book
     secName     CHAR(15)    NOT NULL,
 	branchID 	INTEGER		NOT NULL,
 --Foreign Keys
-    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID)
+    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID),
 --Book must belong to a valid section
     CONSTRAINT bookIC2 CHECK((REGEXP_LIKE(authorLname, '([ABCDE])', 'i') AND secName = 'A-E') or
                             (REGEXP_LIKE(authorLname, '([FGHIJ])', 'i') AND secName = 'F-J') or
@@ -96,7 +96,7 @@ CREATE TABLE Book
 CREATE TABLE Genres
 (
     bookID      INTEGER,
-    genre       CHAR(20),
+    genre       CHAR(50),
 	CONSTRAINT genresIC1 PRIMARY KEY(bookID, genre),
 	CONSTRAINT genresIC2 FOREIGN KEY (bookID) REFERENCES Book(bookID)
 	--CONSTRAINT genresIC3 CHECK (genre = 'Fiction' or genre = 'Non-fiction' or genre = 'Children')
@@ -142,6 +142,11 @@ SET CONSTRAINT employeeIC1 IMMEDIATE;
 INSERT INTO Section values ('A-E', 10, 100, 50);
 INSERT INTO Section values ('F-J', 10, 100, 50);
 INSERT INTO Section values ('K-O', 10, 100, 50);
+INSERT INTO Section values ('P-T', 10, 500, 200);
+INSERT INTO Section values ('U-Z', 10, 500, 200);
+INSERT INTO Section values ('A-E', 20, 100, 50);
+INSERT INTO Section values ('F-J', 20, 100, 50);
+INSERT INTO Section values ('K-O', 20, 100, 50);
 INSERT INTO Section values ('P-T', 20, 500, 200);
 INSERT INTO Section values ('U-Z', 20, 500, 200);
 
