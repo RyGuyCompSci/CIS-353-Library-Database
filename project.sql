@@ -132,12 +132,11 @@ INSERT INTO BRANCH VALUES (20, 'Allendale Public Library', 140);
 SET CONSTRAINT employeeIC1 IMMEDIATE;
 
 --Sections--
-INSERT INTO Section values ('Fiction', 10, 100, 50);
-INSERT INTO Section values ('Nonfiction', 10, 100, 50);
-INSERT INTO Section values ('Childrens', 10, 100, 50);
-INSERT INTO Section values ('Fiction', 20, 500, 200);
-INSERT INTO Section values ('Nonfiction', 20, 500, 200);
-INSERT INTO Section values ('Childrens', 20, 500, 200);
+INSERT INTO Section values ('A-E', 10, 100, 50);
+INSERT INTO Section values ('F-J', 10, 100, 50);
+INSERT INTO Section values ('K-O', 10, 100, 50);
+INSERT INTO Section values ('P-T', 20, 500, 200);
+INSERT INTO Section values ('U-Z', 20, 500, 200);
 
 --Books-------------------------------------------------------------
 -- If you're going to add unnecessary amount of spaces to make the joke, it's not worth it. Stop
