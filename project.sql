@@ -51,11 +51,13 @@ CREATE TABLE Customer
     name        CHAR(50)    NOT NULL,
     age         INTEGER NOT NULL,
     phoneNum    INTEGER,
-    email       CHAR(50) CHECK (email like '%@%' and email like '%.%'),
+    email       CHAR(50),
 --Customer must supply a phone number or an email to be valid
     CONSTRAINT custIC1 CHECK ((phoneNum is not null) or (email is not null)),
 	CONSTRAINT custIC2 UNIQUE (phoneNum),
-	CONSTRAINT custIC3 UNIQUE (email)
+	CONSTRAINT custIC3 UNIQUE (email),
+--Customer email must be in valid email format
+    CONSTRAINT custIC4 CHECK (email like '%@%' and email like '%.%')
 );
 
 CREATE TABLE Section
@@ -91,7 +93,6 @@ CREATE TABLE Genres
     genre       CHAR(50),
 	CONSTRAINT genresIC1 PRIMARY KEY(bookID, genre),
 	CONSTRAINT genresIC2 FOREIGN KEY (bookID) REFERENCES Book(bookID)
-	--CONSTRAINT genresIC3 CHECK (genre = 'Fiction' or genre = 'Non-fiction' or genre = 'Children')
 );
 
 CREATE TABLE Balances
@@ -156,6 +157,7 @@ INSERT INTO Customer VALUES (1235, 'Henry Ford', 80, 6162829999, 'inventor100@ya
 INSERT INTO Customer VALUES (1236, 'Thomas Hamilton', 25, 1231231234, null);
 INSERT INTO Customer VALUES (1237, 'Dank Memes', 47, 5555554444, 'magnumdong1337@gmail.com');
 
+
 --Balances----------------------------------------------------------
 INSERT INTO Balances values (10, 1234, 15.00);
 INSERT INTO Balances values (10, 1235, 0.00);
@@ -171,7 +173,6 @@ INSERT INTO Genres values (0123457, 'Nonfiction');
 INSERT INTO Genres values (0123457, 'Sports and Recreation');
 INSERT INTO Genres values (0123459, 'Fiction');
 INSERT INTO Genres values (0123459, 'Large Print');
-
 
 --CheckOut------------------------------------------------------
 INSERT INTO CheckOut values (1234, TO_DATE('10/2/17', 'MM/DD/YY'), TO_DATE('10/9/17', 'MM/DD/YY'), 0123455, 1);
@@ -302,3 +303,17 @@ order by authorFname;
 
 COMMIT;
 SPOOL OFF 
+
+
+
+--TESTING custID KEY UNIQUE
+INSERT INTO Customer VALUES (1234, 'Sponge Bob', 32, 8005551111, null);
+
+--TESTING genresIC2 
+INSERT INTO Genres values (000000, 'Antigenre');
+
+--TESTING email custIC4
+INSERT INTO Customer VALUES (1432, 'Sponge Bob', 32, 8005551111, 'sponge@bobcom');
+
+--TESTING bookIC2
+INSERT INTO Book VALUES (9999999, 'Dustin', 'Thurston', 'I am stressed out about life', 'A-E', 10);
