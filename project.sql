@@ -78,12 +78,19 @@ CREATE TABLE Section
 CREATE TABLE Book
 (
     bookID      INTEGER 	PRIMARY KEY,
-    author      CHAR(20)    NOT NULL,
+    authorFname      CHAR(20)    NOT NULL,
+    authorLname      CHAR(20)   NOT NULL,
     title       CHAR(35)    NOT NULL,
     secName     CHAR(15)    NOT NULL,
 	branchID 	INTEGER		NOT NULL,
---Book must belong to a valid section
+--Foreign Keys
     CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID)
+--Book must belong to a valid section
+    CONSTRAINT bookIC2 CHECK((authorLname LIKE [ABCDE] and secName = 'A-E') or
+                            (authorLname LIKE [FGHIJ] and secName = 'F-J') or
+                            (authorLname LIKE [KLMNO] and secName = 'K-O') or
+                            (authorLname LIKE [PQRST] and secName = 'P-T') or
+                            (authorLname LIKE [UVWXYZ] and secName = 'U-Z'))
 );
 
 CREATE TABLE Genres
@@ -139,12 +146,11 @@ INSERT INTO Section values ('P-T', 20, 500, 200);
 INSERT INTO Section values ('U-Z', 20, 500, 200);
 
 --Books-------------------------------------------------------------
--- If you're going to add unnecessary amount of spaces to make the joke, it's not worth it. Stop
-INSERT INTO Book values (0123457, 'Bat Erry', 'Team is Total', 'Nonfiction', 10);
-INSERT INTO Book values (0123459, 'Doll Perry', 'An Hourly Diary of a Poor Man', 'Nonfiction', 10);
-INSERT INTO Book values (0123458, 'Car Fone', '2 is Too Much', 'Nonfiction', 20);
-INSERT INTO Book values (0123455, 'Josh Eldridge', 'A Study in Overused Phrases', 'Nonfiction', 20);
-INSERT INTO Book values (0123456, 'Al Fred', 'Give it All', 'Nonfiction', 20);
+INSERT INTO Book values (0123457, 'Bat', 'Erry', 'Team is Total', 'Nonfiction', 10);
+INSERT INTO Book values (0123459, 'Doll', 'Perry', 'An Hourly Diary of a Poor Man', 'Nonfiction', 10);
+INSERT INTO Book values (0123458, 'Car', 'Fone', '2 is Too Much', 'Nonfiction', 20);
+INSERT INTO Book values (0123455, 'Josh', 'Eldridge', 'A Study in Overused Phrases', 'Nonfiction', 20);
+INSERT INTO Book values (0123456, 'Al', 'Fred', 'Give it All', 'Nonfiction', 20);
 
 --Customer----------------------------------------------------------
 INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, null);
@@ -192,7 +198,6 @@ WHERE C1.age > 13 AND
 	C1.custID < C2.custID;
 
 --Union, Intersect, and/or minus
-
 --Q3-- Union (select customers that have age above 50 or have a book checked out)
 SELECT C.custID, C.age
 FROM Customer C
@@ -285,7 +290,7 @@ WHERE rownum = 1;
 --find the title of books ordered by author
 Select title
 from Book
-order by author;
+order by authorFname;
 
 COMMIT;
 SPOOL OFF 
