@@ -84,13 +84,18 @@ CREATE TABLE Book
     secName     CHAR(15)    NOT NULL,
 	branchID 	INTEGER		NOT NULL,
 --Foreign Keys
-    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID),
+    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID)
 --Book must belong to a valid section
-    CONSTRAINT bookIC2 CHECK((authorLname LIKE '[ABCDE]%' and secName = 'A-E') or
-                            (authorLname LIKE '[FGHIJ]%' and secName = 'F-J') or
-                            (authorLname LIKE '[KLMNO]%' and secName = 'K-O') or
-                            (authorLname LIKE '[PQRST]%' and secName = 'P-T') or
-                            (authorLname LIKE '[UVWXYZ]%' and secName = 'U-Z'))
+--    CONSTRAINT bookIC2 CHECK((REGEXP_LIKE(authorLname, '([ABCDE])', 'i') AND secName = 'A-E') or
+--                            (REGEXP_LIKE(authorLname, '([FGHIJ])', 'i') AND secName = 'F-J') or
+--                            (REGEXP_LIKE(authorLname, '[KLMNO]', 'i') AND secName = 'K-O') or
+--                            (REGEXP_LIKE(authorLname, '[PQRST]', 'i') AND secName = 'P-T') or
+--                            (REGEXP_LIKE(authorLname, '[UVWXYZ]', 'i') AND secName = 'U-Z'))
+--    CONSTRAINT bookIC2 CHECK((authorLname LIKE '[ABCDE]%' and secName = 'A-E') or
+--                            (authorLname LIKE '[FGHIJ]%' and secName = 'F-J') or
+--                           (authorLname LIKE '[KLMNO]%' and secName = 'K-O') or
+--                            (authorLname LIKE '[PQRST]%' and secName = 'P-T') or
+--                            (authorLname LIKE '[UVWXYZ]%' and secName = 'U-Z'))
 );
 
 CREATE TABLE Genres
