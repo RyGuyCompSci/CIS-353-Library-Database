@@ -84,13 +84,13 @@ CREATE TABLE Book
     secName     CHAR(15)    NOT NULL,
 	branchID 	INTEGER		NOT NULL,
 --Foreign Keys
-    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID)
+    CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID),
 --Book must belong to a valid section
-    CONSTRAINT bookIC2 CHECK((authorLname LIKE [ABCDE] and secName = 'A-E') or
-                            (authorLname LIKE [FGHIJ] and secName = 'F-J') or
-                            (authorLname LIKE [KLMNO] and secName = 'K-O') or
-                            (authorLname LIKE [PQRST] and secName = 'P-T') or
-                            (authorLname LIKE [UVWXYZ] and secName = 'U-Z'))
+    CONSTRAINT bookIC2 CHECK((authorLname LIKE '[ABCDE]%' and secName = 'A-E') or
+                            (authorLname LIKE '[FGHIJ]%' and secName = 'F-J') or
+                            (authorLname LIKE '[KLMNO]%' and secName = 'K-O') or
+                            (authorLname LIKE '[PQRST]%' and secName = 'P-T') or
+                            (authorLname LIKE '[UVWXYZ]%' and secName = 'U-Z'))
 );
 
 CREATE TABLE Genres
@@ -146,11 +146,11 @@ INSERT INTO Section values ('P-T', 20, 500, 200);
 INSERT INTO Section values ('U-Z', 20, 500, 200);
 
 --Books-------------------------------------------------------------
-INSERT INTO Book values (0123457, 'Bat', 'Erry', 'Team is Total', 'Nonfiction', 10);
-INSERT INTO Book values (0123459, 'Doll', 'Perry', 'An Hourly Diary of a Poor Man', 'Nonfiction', 10);
-INSERT INTO Book values (0123458, 'Car', 'Fone', '2 is Too Much', 'Nonfiction', 20);
-INSERT INTO Book values (0123455, 'Josh', 'Eldridge', 'A Study in Overused Phrases', 'Nonfiction', 20);
-INSERT INTO Book values (0123456, 'Al', 'Fred', 'Give it All', 'Nonfiction', 20);
+INSERT INTO Book values (0123457, 'Bat', 'Erry', 'Team is Total', 'A-E', 10);
+INSERT INTO Book values (0123459, 'Doll', 'Perry', 'An Hourly Diary of a Poor Man', 'P-T', 10);
+INSERT INTO Book values (0123458, 'Car', 'Fone', '2 is Too Much', 'F-J', 20);
+INSERT INTO Book values (0123455, 'Josh', 'Eldridge', 'A Study in Overused Phrases', 'A-E', 20);
+INSERT INTO Book values (0123456, 'Al', 'Fred', 'Give it All', 'F-J', 20);
 
 --Customer----------------------------------------------------------
 INSERT INTO Customer VALUES (1234, 'Bob Mad', 47, 9062825555, null);
