@@ -166,7 +166,13 @@ INSERT INTO Balances values (20, 1234, 5.00);
 INSERT INTO Balances values (20, 1235, 0.00);
 INSERT INTO Balances values (20, 1236, 7.00);
 --Genres------------------------------------------------------------
--- What's the point of genres if section hold fiction/nonfiction/children?
+INSERT INTO Genres values (0123455, 'Erotica');
+INSERT INTO Genres values (0123455, 'Fiction');
+INSERT INTO Genres values (0123455, 'Fantasy');
+INSERT INTO Genres values (0123457, 'Nonfiction');
+INSERT INTO Genres values (0123457, 'Sports & Recreation');
+INSERT INTO Genres values (0123459, 'Fiction');
+INSERT INTO Genres values (0123459, 'Large Print');
 
 
 --CheckOut------------------------------------------------------
