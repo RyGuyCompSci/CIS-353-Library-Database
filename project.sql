@@ -86,8 +86,8 @@ CREATE TABLE Book
 --Foreign Keys
     CONSTRAINT bookIC1 FOREIGN KEY (secName, branchID) REFERENCES Section(secName, branchID),
 --Book must belong to a valid section
-    CONSTRAINT bookIC2 CHECK((REGEXP_LIKE(authorLname, '([ABCDE])', 'i') AND secName = 'A-E') or
-                            (REGEXP_LIKE(authorLname, '([FGHIJ])', 'i') AND secName = 'F-J') or
+    CONSTRAINT bookIC2 CHECK((REGEXP_LIKE(authorLname, '[ABCDE]', 'i') AND secName = 'A-E') or
+                            (REGEXP_LIKE(authorLname, '[FGHIJ]', 'i') AND secName = 'F-J') or
                             (REGEXP_LIKE(authorLname, '[KLMNO]', 'i') AND secName = 'K-O') or
                             (REGEXP_LIKE(authorLname, '[PQRST]', 'i') AND secName = 'P-T') or
                             (REGEXP_LIKE(authorLname, '[UVWXYZ]', 'i') AND secName = 'U-Z'))
