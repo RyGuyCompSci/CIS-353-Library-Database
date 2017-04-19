@@ -37,7 +37,7 @@ CREATE TABLE Employee
 CREATE TABLE Branch
 (
 	branchID    INTEGER 	PRIMARY KEY,
-	brName      CHAR(200)   NOT NULL,
+	brName      CHAR(50)   NOT NULL,
 	managerID   INTEGER     NOT NULL,
 -- ManagerID is a Foreign Key
     CONSTRAINT branchIC1 FOREIGN KEY (managerID) REFERENCES Employee(empID)
@@ -72,8 +72,8 @@ CREATE TABLE Section
 CREATE TABLE Book
 (
     bookID      INTEGER 	PRIMARY KEY,
-    authorFname      CHAR(20)    NOT NULL,
-    authorLname      CHAR(20)   NOT NULL,
+    authorFname      CHAR(10)    NOT NULL,
+    authorLname      CHAR(10)   NOT NULL,
     title       CHAR(35)    NOT NULL,
     secName     CHAR(15)    NOT NULL,
 	branchID 	INTEGER		NOT NULL,
@@ -166,7 +166,7 @@ INSERT INTO Balances values (20, 1234, 5.00);
 INSERT INTO Balances values (20, 1235, 0.00);
 INSERT INTO Balances values (20, 1236, 7.00);
 --Genres------------------------------------------------------------
-INSERT INTO Genres values (0123455, 'Erotica');
+INSERT INTO Genres Values (0123455, 'Horror');
 INSERT INTO Genres values (0123455, 'Fiction');
 INSERT INTO Genres values (0123455, 'Fantasy');
 INSERT INTO Genres values (0123457, 'Nonfiction');
@@ -302,6 +302,8 @@ from Book
 order by authorFname;
 
 
+
+--TEST INTEGRITY CONSTRAINTS---------------------------------------
 --TESTING custID KEY UNIQUE
 INSERT INTO Customer VALUES (1234, 'Sponge Bob', 32, 8005551111, null);
 
